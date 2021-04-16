@@ -134,7 +134,6 @@ class EditorQRPage extends StatelessWidget {
                   editorQR.setColorFondoQr = _colorFondoQR;
                   editorQR.setColorQr = _colorQR;
                   Navigator.of(context).pop();
-
                 },
               )
             ],
