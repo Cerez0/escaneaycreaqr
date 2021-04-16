@@ -20,7 +20,7 @@ class CustomNavigatorBar extends StatelessWidget {
           if ( i == 0){
             uiProvider.textAppBar = 'Ultimos QR escaneados';
           }else{
-            uiProvider.textAppBar = 'Crea tu codigo QR';
+            uiProvider.textAppBar = 'Crea tu codigo';
           }
 
           // Icono AppBar
@@ -28,7 +28,7 @@ class CustomNavigatorBar extends StatelessWidget {
           if ( i == 0){
             uiProvider.iconAppBar = Icon(Icons.delete_forever);
           }else{
-            uiProvider.iconAppBar = Icon(Icons.save_alt);
+            uiProvider.iconAppBar = Icon(null);
           }
 
 

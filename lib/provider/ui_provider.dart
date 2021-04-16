@@ -42,18 +42,6 @@ class UiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-/////////////////////////// CAMPO TEXTO CREAR QR //////////////////////////////////
-
-  String _datosInput = 'Texto Desde el Provider';
-
-  String get datosCampotexto {
-    return this._datosInput;
-  }
-
-  set datosCampotexto( String datosCampoTexto )  {
-    this._datosInput = datosCampotexto;
-    notifyListeners();
-  }
 
 }
 

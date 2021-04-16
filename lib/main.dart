@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_qrscanner/pages/editorQR_page.dart';
 import 'package:flutter_app_qrscanner/pages/principal_page.dart';
+import 'package:flutter_app_qrscanner/provider/editorQr_provider.dart';
 import 'package:flutter_app_qrscanner/provider/ui_provider.dart';
 import 'package:provider/provider.dart';
 import 'provider/scan_list_provider.dart';
@@ -15,6 +17,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => new UiProvider()),
+        ChangeNotifierProvider(create: (_) => new EditorQrProvider()),
         ChangeNotifierProvider(create: (_) => new ScanListProvider()),
       ],
       child: MaterialApp(
@@ -24,9 +27,10 @@ class MyApp extends StatelessWidget {
 
           primarySwatch: Colors.red,
         ),
-        initialRoute: 'historial',
+        initialRoute: 'principal',
         routes: {
-          'historial' : (_) => PrincipalPage(),
+          'principal' : (_) => PrincipalPage(),
+          'editorQr' : (_) =>  EditorQRPage(),
         },
       ),
     );

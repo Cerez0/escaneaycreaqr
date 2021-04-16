@@ -86,6 +86,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "flutter_colorpicker",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_colorpicker-0.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_plugin_android_lifecycle",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11",
       "packageUri": "lib/",
@@ -320,7 +326,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-04-09T22:13:41.508330Z",
+  "generated": "2021-04-15T20:50:02.658617Z",
   "generator": "pub",
   "generatorVersion": "2.12.2"
 }

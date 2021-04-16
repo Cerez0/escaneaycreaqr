@@ -1,11 +1,10 @@
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_qrscanner/provider/ui_provider.dart';
-import 'package:provider/provider.dart';
 
 
 class CodigoQr extends StatelessWidget {
 
+  String _datosCampotexto = '';
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +14,9 @@ class CodigoQr extends StatelessWidget {
 
   codigoQr( BuildContext context, mediaQuery ) {
 
-    final uiProvider = Provider.of<UiProvider>(context);
 
-    if (uiProvider.datosCampotexto == '' ){
+
+    if (_datosCampotexto == '' ){
       return Expanded(
         child: Container(
           height: 100,
@@ -46,9 +45,10 @@ class CodigoQr extends StatelessWidget {
             ),
 
              BarcodeWidget(
+               //color: Colors.white,
                height: 200,
                barcode: Barcode.qrCode(),
-               data: uiProvider.datosCampotexto,
+               data: _datosCampotexto,
 
              ),
 
