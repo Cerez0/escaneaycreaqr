@@ -28,10 +28,10 @@ class ScanTiles extends StatelessWidget {
           Provider.of<ScanListProvider>(context, listen: false).borrarScanPorId(scans[i].id);
         },
         child: ListTile(
-          leading: Icon(
-            this.tipo == 'html'
-                ? Icons.http_rounded
-                : Icons.location_pin,
+          leading: Icon(Icons.qr_code,
+            // this.tipo == 'html'
+            //     ? Icons.qr_code
+            //     : Icons.qr_code
 
             color: Theme.of(context).primaryColor,
           ),

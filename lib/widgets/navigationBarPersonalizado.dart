@@ -14,7 +14,7 @@ class CustomNavigatorBar extends StatelessWidget {
 
     return BottomNavigationBar(
         onTap: (int i) {
-          uiProvider.selectedMenuOpt = i;
+          uiProvider.setSelectedMenuOpt = i;
 
           // Titulo AppBar
           if ( i == 0){

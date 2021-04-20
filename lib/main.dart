@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_qrscanner/pages/editorCB_page.dart';
 import 'package:flutter_app_qrscanner/pages/editorQR_page.dart';
 import 'package:flutter_app_qrscanner/pages/principal_page.dart';
 import 'package:flutter_app_qrscanner/provider/editorQr_provider.dart';
@@ -24,13 +25,14 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'QR Scanner',
         theme: ThemeData(
-
           primarySwatch: Colors.red,
+          fontFamily: 'Georgia',
         ),
         initialRoute: 'principal',
         routes: {
           'principal' : (_) => PrincipalPage(),
           'editorQr' : (_) =>  EditorQRPage(),
+          'editorCB' : (_) =>  EditorCbPage(),
         },
       ),
     );

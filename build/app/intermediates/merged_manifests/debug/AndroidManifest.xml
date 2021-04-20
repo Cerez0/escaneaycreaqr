@@ -67,11 +67,32 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <provider
+            android:name="de.esys.esysfluttershare.EsysFlutterShareFileProvider"
+            android:authorities="com.example.flutter_app_qrscanner.fileprovider.github.com/orgs/esysberlin/esys-flutter-share"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/esys_flutter_share_filepaths" />
+        </provider>
+
         <activity
             android:name="io.flutter.plugins.urllauncher.WebViewActivity"
             android:exported="false"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name="com.amolg.flutterbarcodescanner.BarcodeCaptureActivity" />
+
+        <provider
+            android:name="io.flutter.plugins.share.ShareFileProvider"
+            android:authorities="com.example.flutter_app_qrscanner.flutter.share_provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/flutter_share_file_paths" />
+        </provider>
+
         <activity
             android:name="com.google.android.gms.common.api.GoogleApiActivity"
             android:exported="false"
