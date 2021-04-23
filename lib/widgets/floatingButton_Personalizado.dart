@@ -21,7 +21,7 @@ class CustomButtonScan extends StatelessWidget {
           ),
           child: Icon(Icons.qr_code_scanner),
           onPressed: () async{
-            String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#3D8BEF', 'Atras', false, ScanMode.QR);
+            String barcodeScanRes = await FlutterBarcodeScanner.scanBarcode('#FF0000', 'Atras', true, ScanMode.QR);
             //final barcodeScanRes = 'https://google.es';
             //final barcodeScanRes = '38.272453,-0.713501';
 

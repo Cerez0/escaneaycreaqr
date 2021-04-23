@@ -37,7 +37,7 @@ class EditorQrProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  //////////////////// Titulo QR ////////////////////////////
+  //////////////////// Titulo Color QR ////////////////////////////
 
   Color _colorTituloQr = Colors.black;
 
@@ -69,6 +69,8 @@ class EditorQrProvider extends ChangeNotifier {
     this._elevacionQR = elevacionQR;
     notifyListeners();
   }
+
+
 
 }
 

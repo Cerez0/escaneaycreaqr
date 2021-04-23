@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_qrscanner/provider/editorQr_provider.dart';
-import 'package:flutter_app_qrscanner/provider/ui_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:animate_do/animate_do.dart';
 
 class CrearQrPage extends StatelessWidget {
   String datosInputTextQR = '';
-  String datosInputTextCB = '';
   
 
   @override
@@ -24,7 +22,6 @@ class CrearQrPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _cardCodigoQR(context, mediaQuery, editorQrProvider),
-              _cardCodigoDeBarras(context, mediaQuery),
             ],
           ),
         ));
@@ -37,10 +34,10 @@ class CrearQrPage extends StatelessWidget {
 
     return Container(
         margin: EdgeInsets.only(bottom: 30.0),
-        height: mediaQuery.size.height / 4,
+        height: mediaQuery.size.height / 3.5,
         width: mediaQuery.size.width / 1.5,
         
-        child: SlideInLeft(
+        child: SlideInRight(
           child: Card(
             color: Theme.of(context).primaryColor,
             elevation: 10.0,
@@ -60,7 +57,7 @@ class CrearQrPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _campoTextoQR(),
+                      _campoTextoQR(context, mediaQuery),
                       SizedBox(
                         height: 20.0,
                       ),
@@ -79,7 +76,7 @@ class CrearQrPage extends StatelessWidget {
     return FittedBox(
       fit: BoxFit.cover,
       child: Text(
-        'Codigo QR',
+        'Generador Codigo QR',
         style: TextStyle(
           //fontSize: 32.0,
           color: Colors.white,
@@ -88,16 +85,20 @@ class CrearQrPage extends StatelessWidget {
     );
   }
 
-  Widget _campoTextoQR() {
-    return Container(
-      width: 220,
-      height: 30,
-      child: TextField(
+  Widget _campoTextoQR(BuildContext context, MediaQueryData mediaQueryData) {
 
-        //cursorHeight: 16.0,
-        //style: TextStyle(fontSize: 18.0),
+    double anchoPantalla = mediaQueryData.size.width;
+    double altoPantalla = mediaQueryData.size.height;
+
+    return Container(
+      width: anchoPantalla * 0.6,
+      height: altoPantalla * 0.04,
+      child: TextField(
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 7.0),
+          hintStyle: TextStyle(
+            fontSize: anchoPantalla * 0.035
+          ),
           filled: true,
           fillColor: Colors.white,
           enabledBorder: OutlineInputBorder(
@@ -107,6 +108,7 @@ class CrearQrPage extends StatelessWidget {
             borderSide: BorderSide(color: Colors.white),
           ),
           hintText: 'Ej: http://www.google.es',
+
         ),
         onChanged: (String texto) {
           datosInputTextQR = texto;
@@ -118,7 +120,9 @@ class CrearQrPage extends StatelessWidget {
   Widget _botonGenerarQR(BuildContext context, EditorQrProvider editorQrProvider) {
     return ElevatedButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white)),
+          backgroundColor: MaterialStateProperty.all(Colors.white),
+
+        ),
         child: Text(
           'Generar',
           style: TextStyle(
@@ -133,117 +137,13 @@ class CrearQrPage extends StatelessWidget {
         });
   }
 
-  /////////////////CREAR CODIGOS DE BARRAS/////////////////////////
 
-  Widget _cardCodigoDeBarras(BuildContext context, MediaQueryData mediaQuery) {
-
-    UiProvider uiProvider = Provider.of<UiProvider>(context);
-
-    return Container(
-      margin: EdgeInsets.only(bottom: 30.0),
-      height: mediaQuery.size.height / 4,
-      width: mediaQuery.size.width / 1.5,
-      
-      child: SlideInRight(
-        child: Card(
-          color: Theme.of(context).primaryColor,
-          elevation: 10.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            side: BorderSide(
-              color: Colors.white,
-              width: 3.0,
-            ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _tituloCB(context),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _campoTextoCB(),
-                    SizedBox(
-                      height: 20.0,
-                    ),
-                    _botonGenerarCB(context),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _tituloCB(BuildContext context) {
-    return Text(
-      'Codigo de Barras',
-      style: TextStyle(
-        //fontSize: 32.0,
-        color: Colors.white,
-      ),
-    );
-  }
-
-  Widget _campoTextoCB() {
-    return Container(
-      width: 220,
-      height: 30,
-      child: TextField(
-
-        //cursorHeight: 16.0,
-        //style: TextStyle(fontSize: 18.0),
-        decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(vertical: 0.0),
-          filled: true,
-          fillColor: Colors.white,
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          hintText: 'Ej: ',
-        ),
-        onChanged: (String texto) {
-          datosInputTextCB = texto;
-        },
-      ),
-    );
-  }
-
-  Widget _botonGenerarCB(BuildContext context) {
-    return ElevatedButton(
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.white)),
-        child: Text(
-          'Generar',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        onPressed: () {
-          print(datosInputTextCB);
-          DatosInputCB datosInputCB = DatosInputCB(datosInputTextCB);
-          Navigator.pushNamed(context, 'editorCB', arguments: datosInputCB);
-        });
-  }
 }
 
 class DatosInputQR {
   String datosCampoTexto;
 
   DatosInputQR(this.datosCampoTexto);
-}
-
-class DatosInputCB {
-  String datosCampoTexto;
-
-  DatosInputCB(this.datosCampoTexto);
 }
 
 

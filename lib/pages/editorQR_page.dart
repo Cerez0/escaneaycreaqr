@@ -35,19 +35,9 @@ class EditorQRPage extends StatelessWidget {
         title: Text('Editor'),
         actions: [
           Container(
-              margin: EdgeInsets.only(right: 0.0),
+              margin: EdgeInsets.only(right: 5.0),
               child: Row(
                 children: [
-
-                  IconButton(
-                    icon: Icon(Icons.format_color_fill),
-                    onPressed: (){
-
-                      //////// Cambiar Color de fondo ////////////
-
-                    },
-                  ),
-
 
                   IconButton(
                     icon: Icon(Icons.save_alt),
@@ -74,7 +64,7 @@ class EditorQRPage extends StatelessWidget {
                       children: [
 
                         _imagenQr(argsQR.datosCampoTexto, editorQr),
-                        _textoDatos(editorQr.tituloQr),
+                        _textoDatos(editorQr.tituloQr, editorQr),
                         //SizedBox(height: 20.0),
                       ],
                     ),
@@ -97,6 +87,7 @@ class EditorQRPage extends StatelessWidget {
                         _selecColorQR(context, editorQr),
                         _selecColorFondoQr(context, editorQr),
                         _cambiarTexto(context, editorQr),
+                        _selecColorTituloQr(context, editorQr),
                       ],
 
                     ),
@@ -142,13 +133,103 @@ class EditorQRPage extends StatelessWidget {
     );
   }
 
-  Widget _textoDatos(String textoDatos) {
+  Widget _textoDatos(String textoDatos, EditorQrProvider editorQr) {
     return ElasticInRight(
       child: Container(
         child: Text(textoDatos, style: TextStyle(
           fontSize: 16.0,
+          color: editorQr.colorTituloQr
         ),),
       ),
+    );
+  }
+
+  //////Guardar Imagen ///////
+
+  void capturaImagen(BuildContext context, EditorQrProvider editorQrProvider) async {
+
+    final RenderRepaintBoundary renderRepaintBoundary = _keyBoundary.currentContext.findRenderObject();
+    final image = await renderRepaintBoundary.toImage();
+    final bytes = await image.toByteData(format: ImageByteFormat.png);
+
+
+    _memoryImage =  bytes.buffer.asUint8List();
+    _showAlertDialogGuardarImagen(context, editorQrProvider);
+  }
+
+  void _showAlertDialogGuardarImagen(BuildContext context, EditorQrProvider editorQR)  async{
+
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (buildcontext) {
+          return FlipInX(
+            child: AlertDialog(
+              contentPadding: EdgeInsets.all(0.0),
+              content: SingleChildScrollView(
+                  child: Container(
+                    //color: Colors.red,
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+
+                        Container(
+                          width: double.infinity,
+                          alignment: Alignment.topRight,
+                          //color: Colors.red,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: (){
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+
+                        Image.memory(_memoryImage),
+                        Container(
+                          padding: EdgeInsets.symmetric(vertical: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+
+                              SizedBox(
+                                width: 100.0,
+                                child: ElevatedButton(
+                                  child: Icon(Icons.share),
+                                  onPressed: () async {
+                                    Share.file('Codigo QR', 'qrImagen.png', _memoryImage, 'image/png');
+                                    //Navigator.of(context).pop();
+                                  },
+                                ),
+                              ),
+
+                              SizedBox(
+                                width: 100.0,
+                                child: ElevatedButton(
+                                  child: Text("Guardar", style: TextStyle(color: Colors.white),),
+                                  onPressed: () async {
+                                    //Share.file('Codigo QR', 'qrImagen.png', _memoryImage, 'image/png');
+
+                                  },
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+
+                      ],
+                    ),
+                  )
+              ),
+
+
+
+
+
+            ),
+          );
+        }
     );
   }
 
@@ -374,8 +455,8 @@ class EditorQRPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Icon(Icons.format_color_fill, size: 50.0),
-            Text('Color Fondo',style: TextStyle(
+            Icon(Icons.format_color_text, size: 50.0),
+            Text('Color Texto',style: TextStyle(
               //fontSize: 20.0
             ),),
           ],
@@ -385,7 +466,7 @@ class EditorQRPage extends StatelessWidget {
             .primaryColor,
         textColor: Colors.white,
         onPressed: () {
-          _showAlertDialogFondo(context, editorQr);
+          _showAlertDialogColorTexto(context, editorQr);
         },
       ),
     );
@@ -398,11 +479,11 @@ class EditorQRPage extends StatelessWidget {
         builder: (buildcontext) {
           return AlertDialog(
 
-            title: Text("Cambiar Color Fondo QR"),
+            title: Text("Cambiar Color Texto"),
             content: SingleChildScrollView(
               child: ColorPicker(
-                pickerColor: _colorFondoQR,
-                onColorChanged: changeColorFondo,
+                pickerColor: _colorTituloQr,
+                onColorChanged: changeColorTexto,
                 showLabel: true,
                 pickerAreaHeightPercent: 0.8,
               ),
@@ -411,7 +492,8 @@ class EditorQRPage extends StatelessWidget {
               ElevatedButton(
                 child: Text("SELECCIONAR", style: TextStyle(color: Colors.white),),
                 onPressed: (){
-                  editorQR.setColorFondoQr = _colorFondoQR;
+                  editorQR.setColorTituloQr = _colorTituloQr;
+                  print(editorQR.colorTituloQr);
                   Navigator.of(context).pop();
 
                 },
@@ -424,96 +506,9 @@ class EditorQRPage extends StatelessWidget {
 
   void changeColorTexto(Color color) {
 
-    _colorFondoQR = color;
+    _colorTituloQr = color;
   }
 
 
-  //////Guardar Imagen ///////
 
-  void capturaImagen(BuildContext context, EditorQrProvider editorQrProvider) async {
-
-    final RenderRepaintBoundary renderRepaintBoundary = _keyBoundary.currentContext.findRenderObject();
-    final image = await renderRepaintBoundary.toImage();
-    final bytes = await image.toByteData(format: ImageByteFormat.png);
-
-
-    _memoryImage =  bytes.buffer.asUint8List();
-    _showAlertDialogGuardarImagen(context, editorQrProvider);
-  }
-
-  void _showAlertDialogGuardarImagen(BuildContext context, EditorQrProvider editorQR)  async{
-
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (buildcontext) {
-          return FlipInX(
-            child: AlertDialog(
-              contentPadding: EdgeInsets.all(0.0),
-              content: SingleChildScrollView(
-                child: Container(
-                  //color: Colors.red,
-                  alignment: Alignment.center,
-                  child: Column(
-                    children: [
-
-                      Container(
-                        width: double.infinity,
-                        alignment: Alignment.topRight,
-                        //color: Colors.red,
-                        child: IconButton(
-                          icon: Icon(Icons.close),
-                          onPressed: (){
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-
-                      Image.memory(_memoryImage),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-
-                            SizedBox(
-                              width: 100.0,
-                              child: ElevatedButton(
-                                child: Icon(Icons.share),
-                                onPressed: () async {
-                                  Share.file('Codigo QR', 'qrImagen.png', _memoryImage, 'image/png');
-                                  //Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-
-                            SizedBox(
-                              width: 100.0,
-                              child: ElevatedButton(
-                                child: Text("Guardar", style: TextStyle(color: Colors.white),),
-                                onPressed: () async {
-                                  //Share.file('Codigo QR', 'qrImagen.png', _memoryImage, 'image/png');
-
-                                },
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      ),
-
-                    ],
-                  ),
-                )
-              ),
-
-
-
-
-
-            ),
-          );
-        }
-    );
-  }
 }
